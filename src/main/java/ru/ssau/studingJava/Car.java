@@ -3,8 +3,21 @@ package ru.ssau.studingJava;
 import java.util.Arrays;
 
 public class Car {
+    private class Model {
+        String name;
+        double price;
+
+        public Model(String name, double price) {
+            this.name = name;
+            this.price = price;
+        }
+    }
+
     private String brand;
     private Model[] models;
+
+    public Car() {
+    }
 
     public Car(String brand, int size) {
         this.brand = brand;
@@ -22,10 +35,18 @@ public class Car {
         return brand;
     }
 
+    public void setModelName(String prevName, String newName) {
+        for (Model carModel : models) {
+            if (carModel.name.equals(prevName)) {
+                carModel.name = newName;
+            }
+        }
+    }
+
     public String[] getAllModelNames() {
         String[] modelNames = new String[models.length];
         for (int i = 0; i < models.length; i++) {
-            modelNames[i] = models[i].getName();
+            modelNames[i] = models[i].name;
         }
         return modelNames;
     }
@@ -33,15 +54,15 @@ public class Car {
     public double[] getAllModelPrices() {
         double[] modelPrices = new double[models.length];
         for (int i = 0; i < models.length; i++) {
-            modelPrices[i] = models[i].getPrice();
+            modelPrices[i] = models[i].price;
         }
         return modelPrices;
     }
 
     public double getPriceByModelName(String modelName) {
         for (Model carModel : models) {
-            if (carModel.getName().equals(modelName)) {
-                return carModel.getPrice();
+            if (carModel.name.equals(modelName)) {
+                return carModel.price;
             }
         }
         return -1;
@@ -49,8 +70,8 @@ public class Car {
 
     public void setPriceByModelName(String modelName, double price) {
         for (Model carModel : models) {
-            if (carModel.getName().equals(modelName)) {
-                carModel.setPrice(price);
+            if (carModel.name.equals(modelName)) {
+                carModel.price = price;
             }
         }
     }
@@ -74,31 +95,5 @@ public class Car {
 
     public int getNumberOfModels() {
         return models.length;
-    }
-
-    private class Model {
-        String name;
-        double price;
-
-        public Model(String name, double price) {
-            this.name = name;
-            this.price = price;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public void setPrice(double price) {
-            this.price = price;
-        }
     }
 }
