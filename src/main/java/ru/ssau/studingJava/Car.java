@@ -1,6 +1,7 @@
 package ru.ssau.studingJava;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Car {
     private class Model {
@@ -35,11 +36,16 @@ public class Car {
         return brand;
     }
 
-    public void setModelName(String prevName, String newName) {
-        for (Model carModel : models) {
-            if (carModel.name.equals(prevName)) {
-                carModel.name = newName;
-            }
+    public void setModelName(String prevName, String newName) throws DuplicateModelNameException, NoSuchModelNameException {
+        List<String> allModelsName = Arrays.asList(getAllModelNames());
+        if (allModelsName.contains(newName)) {
+            throw new DuplicateModelNameException();
+        }
+        int index = allModelsName.indexOf(prevName);
+        if (index != -1) {
+            models[index].name = newName;
+        } else {
+            throw new NoSuchModelNameException();
         }
     }
 
@@ -59,37 +65,51 @@ public class Car {
         return modelPrices;
     }
 
-    public double getPriceByModelName(String modelName) {
+    public double getPriceByModelName(String modelName) throws NoSuchModelNameException {
         for (Model carModel : models) {
             if (carModel.name.equals(modelName)) {
                 return carModel.price;
             }
         }
-        return -1;
+        throw new NoSuchModelNameException();
     }
 
-    public void setPriceByModelName(String modelName, double price) {
-        for (Model carModel : models) {
-            if (carModel.name.equals(modelName)) {
-                carModel.price = price;
-            }
+    public void setPriceByModelName(String modelName, double price) throws NoSuchModelNameException {
+        if (price < 0) {
+            throw new ModelPriceOutOfBoundsException();
+        }
+        List<String> allModelsName = Arrays.asList(getAllModelNames());
+        int index = allModelsName.indexOf(modelName);
+        if (index != -1) {
+            models[index].price = price;
+        } else {
+            throw new NoSuchModelNameException();
         }
     }
 
-    public void addModel(String name, double price) {
+    public void addModel(String name, double price) throws DuplicateModelNameException {
+        List<String> allModelNames = Arrays.asList(getAllModelNames());
+        if (allModelNames.contains(name)) {
+            throw new DuplicateModelNameException();
+        }
+        if (price < 0) {
+            throw new ModelPriceOutOfBoundsException();
+        }
         Model[] newModels = Arrays.copyOf(models, models.length + 1);
         newModels[models.length] = new Model(name, price);
         models = newModels;
     }
 
-    public void removeModel(String name) {
-        String[] modelNames = getAllModelNames();
-        int index = Arrays.asList(modelNames).indexOf(name);
-        Model[] newModels = new Model[models.length - 1];
+    public void removeModel(String name) throws NoSuchModelNameException {
+        List<String> allModelNames = Arrays.asList(getAllModelNames());
+        int index = allModelNames.indexOf(name);
         if (index != -1) {
+            Model[] newModels = new Model[models.length - 1];
             System.arraycopy(models, 0, newModels, 0, index);
             System.arraycopy(models, index + 1, newModels, index, models.length - index - 1);
             models = newModels;
+        } else {
+            throw new NoSuchModelNameException();
         }
     }
 
