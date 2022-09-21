@@ -3,7 +3,7 @@ package ru.ssau.studingJava;
 import java.util.Arrays;
 import java.util.List;
 
-public class Car {
+public class Car implements Vehicle {
     private class Model {
         String name;
         double price;
@@ -28,14 +28,17 @@ public class Car {
         }
     }
 
+    @Override
     public void setBrand(String brand) {
         this.brand = brand;
     }
 
+    @Override
     public String getBrand() {
         return brand;
     }
 
+    @Override
     public void setModelName(String prevName, String newName) throws DuplicateModelNameException, NoSuchModelNameException {
         List<String> allModelsName = Arrays.asList(getAllModelNames());
         if (allModelsName.contains(newName)) {
@@ -49,6 +52,7 @@ public class Car {
         }
     }
 
+    @Override
     public String[] getAllModelNames() {
         String[] modelNames = new String[models.length];
         for (int i = 0; i < models.length; i++) {
@@ -57,6 +61,7 @@ public class Car {
         return modelNames;
     }
 
+    @Override
     public double[] getAllModelPrices() {
         double[] modelPrices = new double[models.length];
         for (int i = 0; i < models.length; i++) {
@@ -65,6 +70,7 @@ public class Car {
         return modelPrices;
     }
 
+    @Override
     public double getPriceByModelName(String modelName) throws NoSuchModelNameException {
         for (Model carModel : models) {
             if (carModel.name.equals(modelName)) {
@@ -74,6 +80,7 @@ public class Car {
         throw new NoSuchModelNameException();
     }
 
+    @Override
     public void setPriceByModelName(String modelName, double price) throws NoSuchModelNameException {
         if (price < 0) {
             throw new ModelPriceOutOfBoundsException();
@@ -87,6 +94,7 @@ public class Car {
         }
     }
 
+    @Override
     public void addModel(String name, double price) throws DuplicateModelNameException {
         List<String> allModelNames = Arrays.asList(getAllModelNames());
         if (allModelNames.contains(name)) {
@@ -100,6 +108,7 @@ public class Car {
         models = newModels;
     }
 
+    @Override
     public void removeModel(String name) throws NoSuchModelNameException {
         List<String> allModelNames = Arrays.asList(getAllModelNames());
         int index = allModelNames.indexOf(name);
@@ -113,6 +122,7 @@ public class Car {
         }
     }
 
+    @Override
     public int getNumberOfModels() {
         return models.length;
     }

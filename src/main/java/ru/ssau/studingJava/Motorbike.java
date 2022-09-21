@@ -3,7 +3,7 @@ package ru.ssau.studingJava;
 import java.util.Arrays;
 import java.util.List;
 
-public class Motorbike {
+public class Motorbike implements Vehicle {
     private class Model {
         String name = null;
         double price = Double.NaN;
@@ -48,19 +48,23 @@ public class Motorbike {
         }
     }
 
+    @Override
     public String getBrand() {
         return brand;
     }
 
+    @Override
     public void setBrand(String brand) {
         this.brand = brand;
         lastModified = System.currentTimeMillis();
     }
 
+    @Override
     public int getNumberOfModels() {
         return size;
     }
 
+    @Override
     public void setModelName(String prevName, String newName) throws NoSuchModelNameException, DuplicateModelNameException {
         Model temp = head;
         for (int i = 0; i != size; i++) {
@@ -77,6 +81,7 @@ public class Motorbike {
         throw new NoSuchModelNameException();
     }
 
+    @Override
     public String[] getAllModelNames() {
         String[] allNames = new String[size];
         Model temp = head;
@@ -87,6 +92,7 @@ public class Motorbike {
         return allNames;
     }
 
+    @Override
     public double[] getAllModelPrices() {
         double[] allPrices = new double[size];
         Model temp = head;
@@ -97,6 +103,7 @@ public class Motorbike {
         return allPrices;
     }
 
+    @Override
     public double getPriceByModelName(String modelName) throws NoSuchModelNameException {
         Model temp = head;
         for (int i = 0; i != size; i++) {
@@ -108,6 +115,7 @@ public class Motorbike {
         throw new NoSuchModelNameException();
     }
 
+    @Override
     public void setPriceByModelName(String modelName, double price) throws NoSuchModelNameException {
         if (price < 0) {
             throw new ModelPriceOutOfBoundsException();
@@ -124,6 +132,7 @@ public class Motorbike {
         throw new NoSuchModelNameException();
     }
 
+    @Override
     public void addModel(String name, double price) throws DuplicateModelNameException {
         if (price < 0) {
             throw new ModelPriceOutOfBoundsException();
@@ -148,6 +157,7 @@ public class Motorbike {
         lastModified = System.currentTimeMillis();
     }
 
+    @Override
     public void removeModel(String name) throws NoSuchModelNameException {
         Model temp = head;
         for (int i = 0; i != size; i++) {
