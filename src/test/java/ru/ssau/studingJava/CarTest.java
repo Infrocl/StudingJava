@@ -1,6 +1,9 @@
 package ru.ssau.studingJava;
 
 import org.testng.annotations.Test;
+import ru.ssau.studingJava.exception.DuplicateModelNameException;
+import ru.ssau.studingJava.exception.ModelPriceOutOfBoundsException;
+import ru.ssau.studingJava.exception.NoSuchModelNameException;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package ru.ssau.studingJava;
+package ru.ssau.studingJava.exception;
 
 import java.io.Serializable;
 

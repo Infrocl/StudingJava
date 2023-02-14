@@ -1,10 +1,14 @@
 package ru.ssau.studingJava;
 
+import ru.ssau.studingJava.exception.DuplicateModelNameException;
+import ru.ssau.studingJava.exception.ModelPriceOutOfBoundsException;
+import ru.ssau.studingJava.exception.NoSuchModelNameException;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class Car implements Vehicle {
-    private class Model {
+public class Car implements Vehicle, Cloneable {
+    private class Model implements Cloneable {
         String name;
         double price;
 
@@ -12,19 +16,39 @@ public class Car implements Vehicle {
             this.name = name;
             this.price = price;
         }
+
+        @Override
+        public Model clone() {
+            try {
+                return (Model) super.clone();
+            } catch (CloneNotSupportedException e) {
+                return new Model(this.name, this.price);
+            }
+        }
     }
 
     private String brand;
     private Model[] models;
-
-    public Car() {
-    }
 
     public Car(String brand, int size) {
         this.brand = brand;
         models = new Model[size];
         for (int i = 0; i < size; i++) {
             models[i] = new Model("Model " + i, (i + 1) * 100000);
+        }
+    }
+
+    @Override
+    public Car clone() {
+        try {
+            Car car = (Car) super.clone();
+            car.models = new Model[this.getNumberOfModels()];
+            for (int i = 0; i < car.getNumberOfModels(); i++) {
+                car.models[i] = this.models[i].clone();
+            }
+            return car;
+        } catch (CloneNotSupportedException e) {
+            return new Car(this.brand, this.getNumberOfModels());
         }
     }
 
@@ -103,9 +127,8 @@ public class Car implements Vehicle {
         if (price < 0) {
             throw new ModelPriceOutOfBoundsException();
         }
-        Model[] newModels = Arrays.copyOf(models, models.length + 1);
-        newModels[models.length] = new Model(name, price);
-        models = newModels;
+        models = Arrays.copyOf(models, models.length + 1);
+        models[models.length - 1] = new Model(name, price);
     }
 
     @Override
@@ -113,6 +136,7 @@ public class Car implements Vehicle {
         List<String> allModelNames = Arrays.asList(getAllModelNames());
         int index = allModelNames.indexOf(name);
         if (index != -1) {
+            //сдвиг, затираем элемент
             Model[] newModels = new Model[models.length - 1];
             System.arraycopy(models, 0, newModels, 0, index);
             System.arraycopy(models, index + 1, newModels, index, models.length - index - 1);

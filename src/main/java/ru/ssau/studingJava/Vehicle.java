@@ -1,5 +1,8 @@
 package ru.ssau.studingJava;
 
+import ru.ssau.studingJava.exception.DuplicateModelNameException;
+import ru.ssau.studingJava.exception.NoSuchModelNameException;
+
 public interface Vehicle {
     String getBrand();
 

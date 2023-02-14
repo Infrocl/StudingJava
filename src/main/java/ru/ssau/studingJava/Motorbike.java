@@ -1,21 +1,31 @@
 package ru.ssau.studingJava;
 
+import ru.ssau.studingJava.exception.DuplicateModelNameException;
+import ru.ssau.studingJava.exception.ModelPriceOutOfBoundsException;
+import ru.ssau.studingJava.exception.NoSuchModelNameException;
+
 import java.util.Arrays;
 import java.util.List;
 
-public class Motorbike implements Vehicle {
-    private class Model {
+public class Motorbike implements Vehicle, Cloneable {
+    private class Model implements Cloneable {
         String name = null;
         double price = Double.NaN;
         Model prev = null;
         Model next = null;
 
-        public Model() {
-        }
-
         public Model(String name, double price) {
             this.name = name;
             this.price = price;
+        }
+
+        @Override
+        public Model clone() {
+            try {
+                return (Model) super.clone();
+            } catch (CloneNotSupportedException e) {
+                return new Model(this.name, this.price);
+            }
         }
     }
 
@@ -26,9 +36,6 @@ public class Motorbike implements Vehicle {
 
     {
         lastModified = System.currentTimeMillis();
-    }
-
-    public Motorbike() {
     }
 
     public Motorbike(String brand, int size) {
@@ -45,6 +52,23 @@ public class Motorbike implements Vehicle {
             head.prev = nextModel;
             last.next = nextModel;
             nextModel.next = head;
+        }
+    }
+
+    @Override
+    public Motorbike clone() {
+        try {
+            Motorbike motorbike = (Motorbike) super.clone();
+            Model temp = this.head;
+            for (int i = 0; i < size; i++) {
+                motorbike.removeModel(temp.name);
+                motorbike.addModel(temp.name, temp.price);
+                temp = temp.next;
+            }
+            return motorbike;
+        } catch (CloneNotSupportedException | NoSuchModelNameException | DuplicateModelNameException e) {
+            e.printStackTrace();
+            return new Motorbike(this.brand, this.getNumberOfModels());
         }
     }
 
