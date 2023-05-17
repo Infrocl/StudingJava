@@ -16,7 +16,7 @@ public class Configuration {
         }
     }
 
-    public static Properties getProperties() {
+    public synchronized static Properties getProperties() {
         if (property == null) {
             new Configuration();
         }

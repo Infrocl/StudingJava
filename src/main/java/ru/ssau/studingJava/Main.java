@@ -34,4 +34,5 @@ public class Main {
         Vehicles.printAllModelNames(clonedMotorbike);
         Vehicles.printAllModelNames(motorbike);
     }
+
 }

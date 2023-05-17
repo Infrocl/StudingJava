@@ -3,7 +3,9 @@ package ru.ssau.studingJava;
 import ru.ssau.studingJava.exception.DuplicateModelNameException;
 import ru.ssau.studingJava.exception.NoSuchModelNameException;
 
-public interface Vehicle {
+import java.io.Serializable;
+
+public interface Vehicle extends Serializable {
     String getBrand();
 
     void setBrand(String brand);

@@ -11,6 +11,10 @@ public class Vehicles {
     private Vehicles() {
     }
 
+    public static Vehicle getSynchronizedVehicle(Vehicle v) {
+        return new SynchronizedVehicle(v);
+    }
+
     public static void setVehicleFactory(VehicleFactory vehicleFactory) {
         factory = vehicleFactory;
     }

@@ -4,11 +4,12 @@ import ru.ssau.studingJava.exception.DuplicateModelNameException;
 import ru.ssau.studingJava.exception.ModelPriceOutOfBoundsException;
 import ru.ssau.studingJava.exception.NoSuchModelNameException;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
 public class Car implements Vehicle, Cloneable {
-    private class Model implements Cloneable {
+    private class Model implements Cloneable, Serializable {
         String name;
         double price;
 
@@ -136,7 +137,6 @@ public class Car implements Vehicle, Cloneable {
         List<String> allModelNames = Arrays.asList(getAllModelNames());
         int index = allModelNames.indexOf(name);
         if (index != -1) {
-            //сдвиг, затираем элемент
             Model[] newModels = new Model[models.length - 1];
             System.arraycopy(models, 0, newModels, 0, index);
             System.arraycopy(models, index + 1, newModels, index, models.length - index - 1);
